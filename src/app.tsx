@@ -1,9 +1,12 @@
+import { AttendeeList } from './components/attendee-list';
+import { Header } from './components/header';
 
 export function App() {
 
   return (
-    <div className="flex justify-center">
-      <h1 className="bg-orange-400 font-bold p-2 rounded">Hello World</h1>
+    <div className="max-w-[1216px] mx-auto py-5 flex-col gap-5">
+      <Header />
+      <AttendeeList />
     </div>
   )
 }
