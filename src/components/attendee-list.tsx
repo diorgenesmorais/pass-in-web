@@ -3,6 +3,7 @@ import { IconButton } from './icon-button'
 import { Table } from './table/table'
 import { TableTh } from './table/table-th'
 import { TableTd } from './table/table-td'
+import { TableRow } from './table/table-row'
 
 export const AttendeeList = () => {
     return (
@@ -16,7 +17,7 @@ export const AttendeeList = () => {
             </div>
             <Table>
                 <thead>
-                    <tr className='border-b border-white/10'>
+                    <TableRow>
                         <TableTh style={{width: 48}}>
                             <input type="checkbox" className='size-4 bg-black/20 rounded border border-white/10' />
                         </TableTh>
@@ -25,12 +26,12 @@ export const AttendeeList = () => {
                         <TableTh>Data da inscrição</TableTh>
                         <TableTh>Data do check-in</TableTh>
                         <TableTh style={{width: 64}} />
-                    </tr>
+                    </TableRow>
                 </thead>
                 <tbody>
                     {Array.from({length: 10}).map((_, i) => {
                         return (
-                            <tr key={i} className='border-b border-white/10 hover:bg-white/5'>
+                            <TableRow key={i} className='hover:bg-white/5'>
                                 <TableTd>
                                     <input type="checkbox" className='size-4 bg-black/20 rounded border border-white/10' />
                                 </TableTd>
@@ -48,7 +49,7 @@ export const AttendeeList = () => {
                                         <MoreHorizontal className='size-4' />
                                     </IconButton>
                                 </TableTd>
-                            </tr>
+                            </TableRow>
                         )
                     })}
                 </tbody>
@@ -75,7 +76,6 @@ export const AttendeeList = () => {
                                     </IconButton>
                                 </div>
                             </div>
-                            
                         </TableTd>
                     </tr>
                 </tfoot>
