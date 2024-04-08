@@ -2,6 +2,7 @@ import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal,
 import { IconButton } from './icon-button'
 import { Table } from './table/table'
 import { TableTh } from './table/table-th'
+import { TableTd } from './table/table-td'
 
 export const AttendeeList = () => {
     return (
@@ -30,23 +31,23 @@ export const AttendeeList = () => {
                     {Array.from({length: 10}).map((_, i) => {
                         return (
                             <tr key={i} className='border-b border-white/10 hover:bg-white/5'>
-                                <td className='py-3 px-4 text-sm text-left text-zinc-300'>
+                                <TableTd>
                                     <input type="checkbox" className='size-4 bg-black/20 rounded border border-white/10' />
-                                </td>
-                                <td className='py-3 px-4 text-sm text-left text-zinc-300'>2465187</td>
-                                <td className='py-3 px-4 text-sm text-left text-zinc-300'>
+                                </TableTd>
+                                <TableTd>2465187</TableTd>
+                                <TableTd>
                                     <div className='flex flex-col gap-1'>
                                         <span className='font-semibold text-white'>Diorgenes Morais</span>
                                         <span>diorgenesmorais@gmail.com</span>
                                     </div>
-                                </td>
-                                <td className='py-3 px-4 text-sm text-left text-zinc-300'>7 dias atrás</td>
-                                <td className='py-3 px-4 text-sm text-left text-zinc-300'>3 dias atrás</td>
-                                <td className='py-3 px-4 text-sm text-left text-zinc-300'>
+                                </TableTd>
+                                <TableTd>7 dias atrás</TableTd>
+                                <TableTd>3 dias atrás</TableTd>
+                                <TableTd>
                                     <IconButton transparent>
                                         <MoreHorizontal className='size-4' />
                                     </IconButton>
-                                </td>
+                                </TableTd>
                             </tr>
                         )
                     })}
