@@ -4,16 +4,26 @@ import { Table } from './table/table'
 import { TableTh } from './table/table-th'
 import { TableTd } from './table/table-td'
 import { TableRow } from './table/table-row'
+import { ChangeEvent, useState } from 'react'
 
 export const AttendeeList = () => {
+    const [searchForParticipants, setSearchForParticipants] = useState('')
+
+    const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+        setSearchForParticipants(event.target.value);
+    }
+
     return (
         <div className='flex flex-col gap-4'>
             <div className="flex gap-3 items-center">
                 <h1 className="text-2xl font-bold">Participantes</h1>
                 <div className="w-72 px-3 border border-white/10 rounded-lg text-sm flex items-center gap-3">
                     <Search className='size-4 text-emerald-300' />
-                    <input type="text" placeholder="Buscar participante..." className="bg-transparent h-9 focus:right-0 flex-1 outline-none border-0 p-0 text-sm" />
+                    <input type="text" placeholder="Buscar participante..." 
+                        className="bg-transparent h-9 focus:right-0 flex-1 outline-none border-0 p-0 text-sm"
+                        onChange={handleSearch} />
                 </div>
+                {searchForParticipants /* apenas para teste */}
             </div>
             <Table>
                 <thead>
