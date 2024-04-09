@@ -5,6 +5,8 @@ import { TableTh } from './table/table-th'
 import { TableTd } from './table/table-td'
 import { TableRow } from './table/table-row'
 import { ChangeEvent, useState } from 'react'
+import { attendees } from '../data/attendees.data'
+import { IAttendee } from '../interfaces/attendee.interface'
 
 export const AttendeeList = () => {
     const [searchForParticipants, setSearchForParticipants] = useState('')
@@ -39,21 +41,21 @@ export const AttendeeList = () => {
                     </TableRow>
                 </thead>
                 <tbody>
-                    {Array.from({length: 10}).map((_, i) => {
+                    {attendees.map((attendee: IAttendee) => {
                         return (
-                            <TableRow key={i} className='hover:bg-white/5'>
+                            <TableRow key={attendee.id} className='hover:bg-white/5'>
                                 <TableTd>
                                     <input type="checkbox" className='size-4 bg-black/20 rounded border border-white/10' />
                                 </TableTd>
-                                <TableTd>2465187</TableTd>
+                                <TableTd>{attendee.id}</TableTd>
                                 <TableTd>
                                     <div className='flex flex-col gap-1'>
-                                        <span className='font-semibold text-white'>Diorgenes Morais</span>
-                                        <span>diorgenesmorais@gmail.com</span>
+                                        <span className='font-semibold text-white'>{attendee.name}</span>
+                                        <span>{attendee.email}</span>
                                     </div>
                                 </TableTd>
-                                <TableTd>7 dias atrás</TableTd>
-                                <TableTd>3 dias atrás</TableTd>
+                                <TableTd>{attendee.createAt.toISOString()}</TableTd>
+                                <TableTd>{attendee.checkedInAt.toISOString()}</TableTd>
                                 <TableTd>
                                     <IconButton transparent>
                                         <MoreHorizontal className='size-4' />
