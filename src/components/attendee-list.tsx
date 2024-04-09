@@ -7,6 +7,7 @@ import { TableRow } from './table/table-row'
 import { ChangeEvent, useState } from 'react'
 import { attendees } from '../data/attendees.data'
 import { IAttendee } from '../interfaces/attendee.interface'
+import { toDateRelative } from '../utils/format-to';
 
 export const AttendeeList = () => {
     const [searchForParticipants, setSearchForParticipants] = useState('')
@@ -54,8 +55,8 @@ export const AttendeeList = () => {
                                         <span>{attendee.email}</span>
                                     </div>
                                 </TableTd>
-                                <TableTd>{attendee.createAt.toISOString()}</TableTd>
-                                <TableTd>{attendee.checkedInAt.toISOString()}</TableTd>
+                                <TableTd>{toDateRelative(attendee.createAt)}</TableTd>
+                                <TableTd>{toDateRelative(attendee.checkedInAt)}</TableTd>
                                 <TableTd>
                                     <IconButton transparent>
                                         <MoreHorizontal className='size-4' />
