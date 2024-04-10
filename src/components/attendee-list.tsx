@@ -85,7 +85,7 @@ export const AttendeeList = () => {
                             <div className='inline-flex items-center gap-8'>
                                 <span>Página {page} de {totalPages}</span>
                                 <div className='flex gap-1.5'>
-                                    <IconButton onClick={() => setPage(1)}>
+                                    <IconButton onClick={() => setPage(1)} disabled={page === 1}>
                                         <ChevronsLeft className='size-4' />
                                     </IconButton>
                                     <IconButton onClick={goPreviousToPage} disabled={page === 1}>
@@ -94,7 +94,7 @@ export const AttendeeList = () => {
                                     <IconButton onClick={goNextToPage} disabled={page === totalPages}>
                                         <ChevronRight className='size-4' />
                                     </IconButton>
-                                    <IconButton onClick={() => setPage(totalPages)}>
+                                    <IconButton onClick={() => setPage(totalPages)} disabled={page === totalPages}>
                                         <ChevronsRight className='size-4' />
                                     </IconButton>
                                 </div>
