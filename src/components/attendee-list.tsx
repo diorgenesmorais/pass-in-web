@@ -11,9 +11,19 @@ import { toDateRelative } from '../utils/format-to';
 
 export const AttendeeList = () => {
     const [searchForParticipants, setSearchForParticipants] = useState('')
+    const [page, setPage] = useState(1)
+    const totalPages = Math.ceil(attendees.length / 10)
 
     const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchForParticipants(event.target.value);
+    }
+
+    const goPreviousToPage = () => {
+        setPage(page - 1)
+    }
+
+    const goNextToPage = () => {
+        setPage(page + 1)
     }
 
     return (
@@ -42,7 +52,7 @@ export const AttendeeList = () => {
                     </TableRow>
                 </thead>
                 <tbody>
-                    {attendees.map((attendee: IAttendee) => {
+                    {attendees.slice((page - 1) * 10, page * 10).map((attendee: IAttendee) => {
                         return (
                             <TableRow key={attendee.id} className='hover:bg-white/5'>
                                 <TableTd>
@@ -69,22 +79,22 @@ export const AttendeeList = () => {
                 <tfoot>
                     <tr>
                         <TableTd colSpan={3}>
-                            Mostrando 10 de 228 itens
+                            Mostrando 10 de {attendees.length} itens
                         </TableTd>
                         <TableTd className='text-right' colSpan={3}>
                             <div className='inline-flex items-center gap-8'>
-                                <span>Página 1 de 23</span>
+                                <span>Página {page} de {totalPages}</span>
                                 <div className='flex gap-1.5'>
-                                    <IconButton>
+                                    <IconButton onClick={() => setPage(1)}>
                                         <ChevronsLeft className='size-4' />
                                     </IconButton>
-                                    <IconButton>
+                                    <IconButton onClick={goPreviousToPage} disabled={page === 1}>
                                         <ChevronLeft className='size-4' />
                                     </IconButton>
-                                    <IconButton>
+                                    <IconButton onClick={goNextToPage} disabled={page === totalPages}>
                                         <ChevronRight className='size-4' />
                                     </IconButton>
-                                    <IconButton>
+                                    <IconButton onClick={() => setPage(totalPages)}>
                                         <ChevronsRight className='size-4' />
                                     </IconButton>
                                 </div>
