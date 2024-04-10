@@ -4,15 +4,29 @@ import { Table } from './table/table'
 import { TableTh } from './table/table-th'
 import { TableTd } from './table/table-td'
 import { TableRow } from './table/table-row'
-import { ChangeEvent, useState } from 'react'
-import { attendees } from '../data/attendees.data'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { IAttendee } from '../interfaces/attendee.interface'
 import { toDateRelative } from '../utils/format-to';
 
 export const AttendeeList = () => {
     const [searchForParticipants, setSearchForParticipants] = useState('')
     const [page, setPage] = useState(1)
+    const [attendees, setAttendees] = useState<Array<IAttendee>>([])
     const totalPages = Math.ceil(attendees.length / 10)
+
+    useEffect(() => {
+        fetch('http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees')
+            .then(res => res.json())
+            .then(data => {
+                setAttendees(data.attendees.map((at: IAttendee) => {
+                    return {
+                        ...at,
+                        createdAt: new Date(at.createdAt),
+                        checkedInAt: at.checkedInAt ? new Date(at.checkedInAt) : ''
+                    }
+                }))
+            })
+    }, [page])
 
     const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchForParticipants(event.target.value);
@@ -52,21 +66,21 @@ export const AttendeeList = () => {
                     </TableRow>
                 </thead>
                 <tbody>
-                    {attendees.slice((page - 1) * 10, page * 10).map((attendee: IAttendee) => {
+                    {attendees.map(({id, name, email, createdAt, checkedInAt }: IAttendee) => {
                         return (
-                            <TableRow key={attendee.id} className='hover:bg-white/5'>
+                            <TableRow key={id} className='hover:bg-white/5'>
                                 <TableTd>
                                     <input type="checkbox" className='size-4 bg-black/20 rounded border border-white/10' />
                                 </TableTd>
-                                <TableTd>{attendee.id}</TableTd>
+                                <TableTd>{id}</TableTd>
                                 <TableTd>
                                     <div className='flex flex-col gap-1'>
-                                        <span className='font-semibold text-white'>{attendee.name}</span>
-                                        <span>{attendee.email}</span>
+                                        <span className='font-semibold text-white'>{name}</span>
+                                        <span>{email}</span>
                                     </div>
                                 </TableTd>
-                                <TableTd>{toDateRelative(attendee.createAt)}</TableTd>
-                                <TableTd>{toDateRelative(attendee.checkedInAt)}</TableTd>
+                                <TableTd>{toDateRelative(createdAt)}</TableTd>
+                                <TableTd>{checkedInAt ? toDateRelative(checkedInAt) : 'Não fez check-in'}</TableTd>
                                 <TableTd>
                                     <IconButton transparent>
                                         <MoreHorizontal className='size-4' />
