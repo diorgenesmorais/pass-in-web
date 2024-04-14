@@ -12,10 +12,11 @@ export const AttendeeList = () => {
     const [searchForParticipants, setSearchForParticipants] = useState('')
     const [page, setPage] = useState(1)
     const [attendees, setAttendees] = useState<Array<IAttendee>>([])
-    const totalPages = Math.ceil(attendees.length / 10)
+    const [total, setTotal] = useState(0)
+    const totalPages = Math.ceil(total / 10)
 
     useEffect(() => {
-        fetch('http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees')
+        fetch(`http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees?pageIndex=${page - 1}`)
             .then(res => res.json())
             .then(data => {
                 setAttendees(data.attendees.map((at: IAttendee) => {
@@ -25,6 +26,7 @@ export const AttendeeList = () => {
                         checkedInAt: at.checkedInAt ? new Date(at.checkedInAt) : ''
                     }
                 }))
+                setTotal(data.total)
             })
     }, [page])
 
@@ -98,7 +100,7 @@ export const AttendeeList = () => {
                 <tfoot>
                     <tr>
                         <TableTd colSpan={3}>
-                            Mostrando 10 de {attendees.length} itens
+                            Mostrando {attendees.length} de {total} itens
                         </TableTd>
                         <TableTd className='text-right' colSpan={3}>
                             <div className='inline-flex items-center gap-8'>
