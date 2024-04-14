@@ -80,7 +80,12 @@ export const AttendeeList = () => {
                                     </div>
                                 </TableTd>
                                 <TableTd>{toDateRelative(createdAt)}</TableTd>
-                                <TableTd>{checkedInAt ? toDateRelative(checkedInAt) : 'Não fez check-in'}</TableTd>
+                                <TableTd>
+                                    {checkedInAt ?
+                                        toDateRelative(checkedInAt) :
+                                        <span className='text-zinc-600'>Não fez check-in</span>
+                                    }
+                                </TableTd>
                                 <TableTd>
                                     <IconButton transparent>
                                         <MoreHorizontal className='size-4' />
