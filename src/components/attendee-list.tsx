@@ -14,9 +14,16 @@ export const AttendeeList = () => {
     const [attendees, setAttendees] = useState<Array<IAttendee>>([])
     const [total, setTotal] = useState(0)
     const totalPages = Math.ceil(total / 10)
-
+    const url = new URL('http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees')
+    
     useEffect(() => {
-        fetch(`http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees?pageIndex=${page - 1}`)
+        url.searchParams.set('pageIndex', String(page - 1))
+
+        if(searchForParticipants) {
+            url.searchParams.set('query', searchForParticipants)
+        }
+
+        fetch(url)
             .then(res => res.json())
             .then(data => {
                 setAttendees(data.attendees.map((at: IAttendee) => {
@@ -28,10 +35,11 @@ export const AttendeeList = () => {
                 }))
                 setTotal(data.total)
             })
-    }, [page])
+    }, [page, searchForParticipants])
 
     const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchForParticipants(event.target.value);
+        setPage(1)
     }
 
     const goPreviousToPage = () => {
@@ -49,10 +57,9 @@ export const AttendeeList = () => {
                 <div className="w-72 px-3 border border-white/10 rounded-lg text-sm flex items-center gap-3">
                     <Search className='size-4 text-emerald-300' />
                     <input type="text" placeholder="Buscar participante..." 
-                        className="bg-transparent h-9 focus:right-0 flex-1 outline-none border-0 p-0 text-sm"
+                        className="bg-transparent h-8 flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
                         onChange={handleSearch} />
                 </div>
-                {searchForParticipants /* apenas para teste */}
             </div>
             <Table>
                 <thead>
