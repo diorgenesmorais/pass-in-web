@@ -12,7 +12,15 @@ export const AttendeeList = () => {
     const getCurrentLocation = () => {
         return new URL(window.location.toString())
     }
-    const [searchForParticipants, setSearchForParticipants] = useState('')
+    const [searchForParticipants, setSearchForParticipants] = useState(() => {
+        const url = getCurrentLocation()
+
+        if(url.searchParams.has('search')) {
+            return url.searchParams.get('search') ?? ''
+        }
+
+        return ''
+    })
     const [page, setPage] = useState(() => {
         const url = getCurrentLocation()
 
@@ -59,8 +67,15 @@ export const AttendeeList = () => {
         setPage(page)
     }
 
+    const setCurrentSearch = (searchForParticipant: string) => {
+        const url = getCurrentLocation()
+        url.searchParams.set('search', searchForParticipant)
+        setHistoryURL(url)
+        setSearchForParticipants(searchForParticipant)
+    }
+
     const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
-        setSearchForParticipants(event.target.value);
+        setCurrentSearch(event.target.value);
         setPage(1)
     }
 
@@ -88,7 +103,7 @@ export const AttendeeList = () => {
                     <Search className='size-4 text-emerald-300' />
                     <input type="text" placeholder="Buscar participante..." 
                         className="bg-transparent h-8 flex-1 outline-none border-0 p-0 text-sm focus:ring-0"
-                        onChange={handleSearch} />
+                        onChange={handleSearch} value={searchForParticipants} />
                 </div>
             </div>
             <Table>
