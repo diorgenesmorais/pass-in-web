@@ -9,14 +9,25 @@ import { IAttendee } from '../interfaces/attendee.interface'
 import { toDateRelative } from '../utils/format-to';
 
 export const AttendeeList = () => {
+    const getCurrentLocation = () => {
+        return new URL(window.location.toString())
+    }
     const [searchForParticipants, setSearchForParticipants] = useState('')
-    const [page, setPage] = useState(1)
+    const [page, setPage] = useState(() => {
+        const url = getCurrentLocation()
+
+        if(url.searchParams.has('page')) {
+            return Number(url.searchParams.get('page'))
+        }
+
+        return 1
+    })
     const [attendees, setAttendees] = useState<Array<IAttendee>>([])
     const [total, setTotal] = useState(0)
     const totalPages = Math.ceil(total / 10)
-    const url = new URL('http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees')
     
     useEffect(() => {
+        const url = new URL('http://localhost:3333/events/9e9bd979-9d10-4915-b339-3786b1634f33/attendees')
         url.searchParams.set('pageIndex', String(page - 1))
 
         if(searchForParticipants) {
@@ -37,17 +48,36 @@ export const AttendeeList = () => {
             })
     }, [page, searchForParticipants])
 
+    const setHistoryURL = (url: URL) => {
+        window.history.pushState({}, "", url)
+    }
+
+    const setCurrentPage = (page: number) => {
+        const url = getCurrentLocation()
+        url.searchParams.set('page', String(page))
+        setHistoryURL(url)
+        setPage(page)
+    }
+
     const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchForParticipants(event.target.value);
         setPage(1)
     }
 
     const goPreviousToPage = () => {
-        setPage(page - 1)
+        setCurrentPage(page - 1)
     }
 
     const goNextToPage = () => {
-        setPage(page + 1)
+        setCurrentPage(page + 1)
+    }
+
+    const goFirstToPage = () => {
+        setCurrentPage(1)
+    }
+
+    const goLastToPage = () => {
+        setCurrentPage(totalPages)
     }
 
     return (
@@ -113,7 +143,7 @@ export const AttendeeList = () => {
                             <div className='inline-flex items-center gap-8'>
                                 <span>Página {page} de {totalPages}</span>
                                 <div className='flex gap-1.5'>
-                                    <IconButton onClick={() => setPage(1)} disabled={page === 1}>
+                                    <IconButton onClick={goFirstToPage} disabled={page === 1}>
                                         <ChevronsLeft className='size-4' />
                                     </IconButton>
                                     <IconButton onClick={goPreviousToPage} disabled={page === 1}>
@@ -122,7 +152,7 @@ export const AttendeeList = () => {
                                     <IconButton onClick={goNextToPage} disabled={page === totalPages}>
                                         <ChevronRight className='size-4' />
                                     </IconButton>
-                                    <IconButton onClick={() => setPage(totalPages)} disabled={page === totalPages}>
+                                    <IconButton onClick={goLastToPage} disabled={page === totalPages}>
                                         <ChevronsRight className='size-4' />
                                     </IconButton>
                                 </div>
